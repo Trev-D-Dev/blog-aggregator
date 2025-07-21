@@ -7,7 +7,7 @@ import (
 	"github.com/Trev-D-Dev/blog-aggregator/internal/database"
 )
 
-func HandlerFollow(s *state, cmd command) error {
+func HandlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) < 1 {
 		return fmt.Errorf("must include only one url to follow")
 	}
@@ -21,13 +21,8 @@ func HandlerFollow(s *state, cmd command) error {
 		return fmt.Errorf("error retrieving feed: %v", err)
 	}
 
-	currUser, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("error retriveing user: %v", err)
-	}
-
 	params := database.CreateFeedFollowParams{
-		UserID: currUser.ID,
+		UserID: user.ID,
 		FeedID: feed.ID,
 	}
 

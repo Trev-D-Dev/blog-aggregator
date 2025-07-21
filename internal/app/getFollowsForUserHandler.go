@@ -3,16 +3,13 @@ package app
 import (
 	"context"
 	"fmt"
+
+	"github.com/Trev-D-Dev/blog-aggregator/internal/database"
 )
 
-func HandlerGetFeedFollowsForUser(s *state, cmd command) error {
+func HandlerGetFeedFollowsForUser(s *state, cmd command, user database.User) error {
 
-	currUser, err := s.db.GetUser(context.Background(), s.cfg.CurrentUserName)
-	if err != nil {
-		return fmt.Errorf("error retrieving user: %v", err)
-	}
-
-	uID := currUser.ID
+	uID := user.ID
 
 	follows, err := s.db.GetFeedFollowsForUser(context.Background(), uID)
 	if err != nil {

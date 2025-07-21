@@ -11,18 +11,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func HandlerAddFeed(s *state, cmd command) error {
+func HandlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 2 {
 		fmt.Println("title and url of feed are required")
 		os.Exit(1)
 	}
-
-	currUser, err := getUser(s)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("")
 
 	params := database.CreateFeedParams{
 		ID:        uuid.New(),
@@ -30,7 +23,7 @@ func HandlerAddFeed(s *state, cmd command) error {
 		UpdatedAt: time.Now(),
 		Name:      cmd.args[0],
 		Url:       cmd.args[1],
-		UserID:    currUser.ID,
+		UserID:    user.ID,
 	}
 
 	newFeed, err := s.db.CreateFeed(context.Background(), params)
@@ -47,5 +40,5 @@ func HandlerAddFeed(s *state, cmd command) error {
 	fmt.Printf("URL: %s\n", newFeed.Url)
 	fmt.Printf("User ID: %v\n", newFeed.UserID)
 
-	return HandlerFollow(s, cmd)
+	return HandlerFollow(s, cmd, user)
 }

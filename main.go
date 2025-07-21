@@ -35,10 +35,10 @@ func main() {
 	comms.Register("reset", app.HandlerReset)
 	comms.Register("users", app.HandlerGetUsers)
 	comms.Register("agg", app.HandlerFetchFeed)
-	comms.Register("addfeed", app.HandlerAddFeed)
+	comms.Register("addfeed", app.MiddlewareLoggedIn(app.HandlerAddFeed))
 	comms.Register("feeds", app.HandlerGetFeeds)
-	comms.Register("follow", app.HandlerFollow)
-	comms.Register("following", app.HandlerGetFeedFollowsForUser)
+	comms.Register("follow", app.MiddlewareLoggedIn(app.HandlerFollow))
+	comms.Register("following", app.MiddlewareLoggedIn(app.HandlerGetFeedFollowsForUser))
 
 	args := os.Args
 	if len(args) < 2 {
