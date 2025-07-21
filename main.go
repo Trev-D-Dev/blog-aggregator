@@ -34,6 +34,7 @@ func main() {
 	comms.Register("register", app.HandlerRegister)
 	comms.Register("reset", app.HandlerReset)
 	comms.Register("users", app.HandlerGetUsers)
+	comms.Register("agg", app.HandlerFetchFeed)
 
 	args := os.Args
 	if len(args) < 2 {
@@ -47,7 +48,7 @@ func main() {
 
 	err = comms.Run(&state, newCmd)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		fmt.Printf("Error: %+v\n", err)
 		os.Exit(1)
 	}
 
