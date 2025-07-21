@@ -1,11 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
 
 	"github.com/Trev-D-Dev/blog-aggregator/internal/app"
 	"github.com/Trev-D-Dev/blog-aggregator/internal/config"
+	"github.com/Trev-D-Dev/blog-aggregator/internal/database"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -15,11 +18,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	state := app.CreateState(&config)
+	db, err := sql.Open("postgres", config.URL)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		os.Exit(1)
+	}
+
+	dbQueries := database.New(db)
+
+	state := app.CreateState(&config, dbQueries)
 
 	comms := app.CreateCommands()
 
 	comms.Register("login", app.HandlerLogin)
+	comms.Register("register", app.HandlerRegister)
 
 	args := os.Args
 	if len(args) < 2 {
