@@ -3,7 +3,21 @@ package app
 import (
 	"context"
 	"fmt"
+
+	"github.com/Trev-D-Dev/blog-aggregator/internal/database"
 )
+
+func getUser(s *state) (database.User, error) {
+	currUserName := s.cfg.CurrentUserName
+
+	currUser, err := s.db.GetUser(context.Background(), currUserName)
+	if err != nil {
+		fmt.Println("error retrieving user '%s'", currUserName)
+		return database.User{}, err
+	}
+
+	return currUser, nil
+}
 
 func HandlerGetUsers(s *state, cmd command) error {
 	currentUser := s.cfg.CurrentUserName
