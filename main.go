@@ -36,6 +36,7 @@ func main() {
 	comms.Register("users", app.HandlerGetUsers)
 	comms.Register("agg", app.HandlerFetchFeed)
 	comms.Register("addfeed", app.HandlerAddFeed)
+	comms.Register("feeds", app.HandlerGetFeeds)
 
 	args := os.Args
 	if len(args) < 2 {
