@@ -12,7 +12,7 @@ func getUser(s *state) (database.User, error) {
 
 	currUser, err := s.db.GetUser(context.Background(), currUserName)
 	if err != nil {
-		fmt.Println("error retrieving user '%s'", currUserName)
+		fmt.Printf("error retrieving user '%s'\n", currUserName)
 		return database.User{}, err
 	}
 

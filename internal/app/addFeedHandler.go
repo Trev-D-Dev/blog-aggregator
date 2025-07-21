@@ -47,5 +47,5 @@ func HandlerAddFeed(s *state, cmd command) error {
 	fmt.Printf("URL: %s\n", newFeed.Url)
 	fmt.Printf("User ID: %v\n", newFeed.UserID)
 
-	return nil
+	return HandlerFollow(s, cmd)
 }

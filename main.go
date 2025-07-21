@@ -37,6 +37,8 @@ func main() {
 	comms.Register("agg", app.HandlerFetchFeed)
 	comms.Register("addfeed", app.HandlerAddFeed)
 	comms.Register("feeds", app.HandlerGetFeeds)
+	comms.Register("follow", app.HandlerFollow)
+	comms.Register("following", app.HandlerGetFeedFollowsForUser)
 
 	args := os.Args
 	if len(args) < 2 {
