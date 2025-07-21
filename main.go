@@ -32,6 +32,7 @@ func main() {
 
 	comms.Register("login", app.HandlerLogin)
 	comms.Register("register", app.HandlerRegister)
+	comms.Register("reset", app.HandlerReset)
 
 	args := os.Args
 	if len(args) < 2 {
