@@ -1,30 +1,27 @@
 package app
 
 import (
-	"context"
-	"encoding/json"
 	"fmt"
-
-	"github.com/Trev-D-Dev/blog-aggregator/internal/rss"
+	"time"
 )
 
 func HandlerFetchFeed(s *state, cmd command) error {
-
-	url := "https://www.wagslane.dev/index.xml"
-
-	rssFeed, err := rss.FetchFeed(context.Background(), url)
-	if err != nil {
-		fmt.Println("error fetching feed")
-		return err
+	if len(cmd.args) < 1 {
+		return fmt.Errorf("must include a time between requests")
 	}
 
-	b, err := json.MarshalIndent(rssFeed, "", " ")
+	timeBetweenRequests, err := time.ParseDuration(cmd.args[0])
 	if err != nil {
-		fmt.Println("error with json.MarshalIndent")
-		return err
+		return fmt.Errorf("error parsing time duration: %v", err)
 	}
 
-	fmt.Println(string(b))
+	fmt.Printf("Collecting feeds every %s\n", cmd.args[0])
+
+	ticker := time.NewTicker(timeBetweenRequests)
+
+	for ; ; <-ticker.C {
+		scrapeFeeds(s)
+	}
 
 	return nil
 }

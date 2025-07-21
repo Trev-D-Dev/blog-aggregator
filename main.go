@@ -40,6 +40,7 @@ func main() {
 	comms.Register("follow", app.MiddlewareLoggedIn(app.HandlerFollow))
 	comms.Register("following", app.MiddlewareLoggedIn(app.HandlerGetFeedFollowsForUser))
 	comms.Register("unfollow", app.MiddlewareLoggedIn(app.HandlerUnfollow))
+	comms.Register("browse", app.MiddlewareLoggedIn(app.HandlerBrowse))
 
 	args := os.Args
 	if len(args) < 2 {
